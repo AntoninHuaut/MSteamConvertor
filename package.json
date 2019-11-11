@@ -1,0 +1,17 @@
+{
+  "name": "msteambot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/apps.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cashify": "^2.0.2",
+    "discord.js": "^11.5.1",
+    "node-fetch": "^2.6.0"
+  }
+}
