@@ -19,7 +19,7 @@ module.exports = async (msg, cutContent) => {
     let appId = grabAppId.getAppIdByURL(gameKey);
 
     if (!appId) {
-        let res = Game.getAppIdByName(gameKey);
+        let res = Game.class.getAppIdByName(gameKey);
         let bestMatch = res[0].bestMatch;
 
         if (bestMatch.rating < RATE_MIN)

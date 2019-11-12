@@ -4,11 +4,18 @@ const stringSimilarity = require('string-similarity');
 const rate = require('../utils/moneyConvert');
 const cacheManager = require('../utils/cacheManager');
 
-module.exports = class Game {
+const STATE = {
+    PENDING: -3,
+    NOT_FOUND: -2,
+    NO_PRICE: -1,
+    FOUND: 1
+}
+
+exports.class = class Game {
     constructor(appId) {
         this.appId = appId;
+        this.state = STATE.PENDING;
         this.gameInfos = {};
-        this.init = false;
     }
 
     async fetchGameDetails(countryCode) {
@@ -17,8 +24,8 @@ module.exports = class Game {
 
         const resList = (await Promise.all(proms)).map(i => i[this.appId].data).filter(i => i != null);
 
-        if (resList.length == 0) return;
-        if (!resList[0].price_overview) return;
+        if (resList.length == 0) return this.state = STATE.NOT_FOUND;
+        if (!resList[0].price_overview) return this.state = STATE.NO_PRICE;
 
         this.gameInfos.name = resList[0].name;
         this.gameInfos.header_image = resList[0].header_image;
@@ -47,7 +54,7 @@ module.exports = class Game {
             }
         }
 
-        this.init = true;
+        this.state = STATE.FOUND;
     }
 
     static getAppIdByName(name) {
@@ -61,11 +68,19 @@ module.exports = class Game {
         return this.gameInfos;
     }
 
+    getState() {
+        return this.state;
+    }
+
     getURL(cc) {
         return `https://store.steampowered.com/api/appdetails?appids=${this.appId}&cc=${cc}`;
     }
 
     isInit() {
-        return this.init;
+        return this.state != STATE.PENDING;
     }
+}
+
+exports.getStateList = () => {
+    return STATE;
 }
