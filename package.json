@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "cashify": "^2.0.2",
+    "currency-symbol-map": "^4.0.4",
     "discord.js": "^11.5.1",
     "node-fetch": "^2.6.0"
   }

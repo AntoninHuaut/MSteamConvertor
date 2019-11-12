@@ -24,10 +24,15 @@ module.exports = class Rate {
     }
 
     convert(amount, from, to) {
-        return this.getCashify().convert(amount, {
-            from: from,
-            to: to
-        });
+        try {
+            return this.getCashify().convert(amount, {
+                from: from,
+                to: to
+            });
+        } catch(err) {
+            console.log(`unknow ${from} to ${to}`)
+            return "N/A";
+        }
     }
 
     getCashify() {

@@ -1,8 +1,5 @@
 const fetch = require('node-fetch');
-const FORMAT = {
-    FR: "€",
-    RU: "pуб"
-}
+const getSymbolFromCurrency = require('currency-symbol-map')
 
 module.exports = class Game {
     constructor(appId, rate) {
@@ -30,6 +27,7 @@ module.exports = class Game {
         if (!resList[0].price_overview) return;
 
         this.gameInfos.name = resList[0].name;
+        this.gameInfos.header_image = resList[0].header_image;
         this.gameInfos.currency = {};
 
         resList.forEach(res => {
@@ -38,7 +36,7 @@ module.exports = class Game {
 
             this.gameInfos.currency[typeCurrency] = {
                 currentPrice: currentPrice,
-                priceFormat: FORMAT[countryCode[resList.indexOf(res)]]
+                priceFormat: getSymbolFromCurrency(typeCurrency)
             };
         });
 
