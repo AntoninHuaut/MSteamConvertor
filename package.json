@@ -13,6 +13,7 @@
     "cashify": "^2.0.2",
     "currency-symbol-map": "^4.0.4",
     "discord.js": "^11.5.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "string-similarity": "^3.0.0"
   }
 }

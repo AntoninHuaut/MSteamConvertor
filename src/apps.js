@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('../config');
 const commands = require("./commands");
+require('./utils/cacheManager');
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);

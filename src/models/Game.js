@@ -1,20 +1,14 @@
 const fetch = require('node-fetch');
-const getSymbolFromCurrency = require('currency-symbol-map')
+const getSymbolFromCurrency = require('currency-symbol-map');
+const stringSimilarity = require('string-similarity');
+const rate = require('../utils/moneyConvert');
+const cacheManager = require('../utils/cacheManager');
 
 module.exports = class Game {
-    constructor(appId, rate) {
+    constructor(appId) {
         this.appId = appId;
-        this.rate = rate;
         this.gameInfos = {};
         this.init = false;
-    }
-
-    getGameInfos() {
-        return this.gameInfos;
-    }
-
-    isInit() {
-        return this.init;
     }
 
     async fetchGameDetails(countryCode) {
@@ -49,14 +43,29 @@ module.exports = class Game {
             for (let curDiff of currencyList) {
                 if (curBase === curDiff) continue;
 
-                this.gameInfos.diffCurrency[curBase][curDiff] = this.rate.convert(this.gameInfos.currency[curBase].currentPrice, curBase, curDiff);
+                this.gameInfos.diffCurrency[curBase][curDiff] = rate.convert(this.gameInfos.currency[curBase].currentPrice, curBase, curDiff);
             }
         }
 
         this.init = true;
     }
 
+    static getAppIdByName(name) {
+        const gamesName = cacheManager.getSteamGames().map(i => i.name.toLowerCase());
+        const matches = stringSimilarity.findBestMatch(name, gamesName);
+        const index = gamesName.indexOf(matches.bestMatch.target);
+        return [matches, cacheManager.getSteamGames()[index].appid];
+    }
+
+    getGameInfos() {
+        return this.gameInfos;
+    }
+
     getURL(cc) {
         return `https://store.steampowered.com/api/appdetails?appids=${this.appId}&cc=${cc}`;
+    }
+
+    isInit() {
+        return this.init;
     }
 }
