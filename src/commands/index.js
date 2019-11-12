@@ -10,7 +10,7 @@ module.exports = (msg) => {
     const splitLength = content.split(" ").length;
 
     if (!msg.content.startsWith(config.discord.prefix))
-        require('./grabAppId').cmd(msg);
+        require('./grabAppId').cmd(msg, content);
     else if (content.length >= 1 && splitLength >= 1)
         require('./getGame')(msg, content);
     else
