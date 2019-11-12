@@ -5,7 +5,9 @@ exports.build = (msg, game) => {
     const gameInfos = game.gameInfos;
 
     let priceMsg = '';
-    Object.keys(gameInfos.currency).forEach(curBase => {
+    let keys = Object.keys(gameInfos.currency).sort(sortCurrency);
+
+    keys.forEach(curBase => {
         const pInfos = gameInfos.currency[curBase];
         priceMsg += `\n**${curBase}** : ${pInfos.currentPrice} ${pInfos.priceFormat}`;
 
@@ -24,7 +26,8 @@ exports.build = (msg, game) => {
         .setFooter(msg.author.tag, msg.author.avatarURL)
         .setTimestamp();
 
-    Object.keys(gameInfos.diffCurrency).forEach(curBase => {
+    keys = Object.keys(gameInfos.diffCurrency).sort(sortCurrency);
+    keys.forEach(curBase => {
         if (curBase == 'EUR') return;
 
         let diff = gameInfos.currency["EUR"].currentPrice - gameInfos.diffCurrency[curBase]["EUR"];
@@ -34,4 +37,9 @@ exports.build = (msg, game) => {
     });
 
     return embed;
+}
+
+function sortCurrency(a, b) {
+    if (a == 'EUR') return -1;
+    return a.localeCompare(b)
 }
