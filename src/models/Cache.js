@@ -17,7 +17,7 @@ module.exports = class Cache {
                 this.rates["EUR"] = 1;
             });
 
-        fetch('https://api.steampowered.com/ISteamApps/GetAppList/v0002/')
+        fetch('https://api.steampowered.com/ISteamApps/GetAppList/v2/')
             .then(res => res.json())
             .then(res => {
                 this.steamGames = res.applist.apps;
